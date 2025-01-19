@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  main:
+    web-application-type: none
+  application:
+    name: banking-system
+  datasource:
+    username: sa
+    password: 
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  sql:
+    init:
+      data-locations: [classpath:sql/user-inserts.sql, classpath:sql/bankaccount-inserts.sql]
+      schema-locations: classpath:sql/create-tables.sql
+  profiles:
+    active: test
