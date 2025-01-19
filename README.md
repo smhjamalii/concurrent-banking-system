@@ -13,6 +13,6 @@ A bank account which has a massive balance (central bank) begins to distribute i
 
 ### Test environment preparation
 
-Before running tests it is necessary to execute TestDataGenerator.main for generating. It will create two files under
-target/test-classes/sql directly namely bankaccount-inserts.sql and user-inserts.sql. Copy these two files into resources/sql
+Before running tests it is necessary to execute TestDataGenerator.main. It will create two files under
+target/test-classes/sql namely bankaccount-inserts.sql and user-inserts.sql. Copy these two files into resources/sql
 package if they aren't exist there.
