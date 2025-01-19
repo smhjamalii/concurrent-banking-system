@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor @Slf4j
@@ -122,7 +123,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
-    @Scheduled(fixedRate = 10)
+    @Scheduled(fixedRate = 5, timeUnit = TimeUnit.SECONDS)
     public void recoverFailedTransactions() {
         recoverFailedTransactionsByType(TransactionType.TRANSFER);
         recoverFailedTransactionsByType(TransactionType.DEPOSIT);

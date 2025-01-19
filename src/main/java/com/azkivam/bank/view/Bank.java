@@ -65,6 +65,7 @@ public class Bank implements CommandLineRunner {
 
                 System.out.println(menu);
             }
+            System.exit(0);
         }
     }
 
@@ -136,7 +137,7 @@ public class Bank implements CommandLineRunner {
             FindBankAccountCommand findBankAccountCommand = new FindBankAccountCommand(bankAccountService, depositCommand.getNumber());
             Optional<BankAccount> bankAccount = findBankAccountCommand.execute();
             bankAccount.ifPresentOrElse(
-                    b -> log.info("{} was deposited to {}, current balance: {}", depositCommand.getBalance(), depositCommand.getNumber(), b.balance()),
+                    b -> log.info("{} has been deposited to {}, current balance: {}", depositCommand.getBalance(), depositCommand.getNumber(), b.balance()),
                     () -> log.info("Bank account not found or was deleted!")
             );
 
