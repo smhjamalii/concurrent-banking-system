@@ -4,6 +4,7 @@ import com.azkivam.bank.baseinfo.TransactionType;
 import com.azkivam.bank.dto.TransactionData;
 import com.azkivam.bank.dto.TransferTransactionData;
 import com.azkivam.bank.exception.BusinessException;
+import com.azkivam.bank.exception.ValidationException;
 import com.azkivam.bank.model.BankAccountModel;
 import com.azkivam.bank.model.FailedTransactionModel;
 import com.azkivam.bank.repository.BankAccountRepository;
@@ -46,8 +47,8 @@ public class TransactionServiceImpl implements TransactionService {
         });
     }
 
-    @Transactional(rollbackFor = BusinessException.class)
-    @Retryable(backoff = @Backoff(delay = 1000L, multiplier = 2))
+    @Transactional(rollbackFor = {BusinessException.class, ValidationException.class})
+    @Retryable(backoff = @Backoff(delay = 1000L, multiplier = 2), notRecoverable = {ValidationException.class}, noRetryFor = {ValidationException.class})
     @Override
     public void withdraw(TransactionData transactionData) {
 
@@ -79,8 +80,8 @@ public class TransactionServiceImpl implements TransactionService {
         failedTransactionRepository.save(failedTransactionBuilder.build());
     }
 
-    @Transactional(rollbackFor = BusinessException.class)
-    @Retryable(backoff = @Backoff(delay = 1000L, multiplier = 2))
+    @Transactional(rollbackFor = {BusinessException.class, ValidationException.class})
+    @Retryable(backoff = @Backoff(delay = 1000L, multiplier = 2), notRecoverable = {ValidationException.class}, noRetryFor = {ValidationException.class})
     @Override
     public void transfer(TransferTransactionData transactionData) {
         if (transactionData.balance() == 0.0D) return;
@@ -119,7 +120,7 @@ public class TransactionServiceImpl implements TransactionService {
     private void verifySufficientBalance(double currentAccountBalance, double decreasedBalance) {
         if (currentAccountBalance - decreasedBalance < 0) {
 
-            throw new BusinessException("Insufficient account balance!");
+            throw new ValidationException("Insufficient account balance!");
         }
     }
 

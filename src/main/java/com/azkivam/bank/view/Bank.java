@@ -3,6 +3,7 @@ package com.azkivam.bank.view;
 import com.azkivam.bank.dto.BankAccount;
 import com.azkivam.bank.dto.User;
 import com.azkivam.bank.exception.BusinessException;
+import com.azkivam.bank.exception.ValidationException;
 import com.azkivam.bank.service.bankaccount.BankAccountService;
 import com.azkivam.bank.service.bankaccount.command.CreateBankAccountCommand;
 import com.azkivam.bank.service.bankaccount.command.FindBankAccountCommand;
@@ -54,15 +55,19 @@ public class Bank implements CommandLineRunner {
             System.out.print(menu);
             String userInput = null;
             while (!(userInput = in.nextLine()).trim().equals("7")) {
-                switch (userInput) {
-                    case "1" -> signup(in);
-                    case "2" -> createBankAccount(in);
-                    case "3" -> deposit(in);
-                    case "4" -> withdraw(in);
-                    case "5" -> transfer(in);
-                    case "6" -> balance(in);
-                }
+                try {
+                    switch (userInput) {
+                        case "1" -> signup(in);
+                        case "2" -> createBankAccount(in);
+                        case "3" -> deposit(in);
+                        case "4" -> withdraw(in);
+                        case "5" -> transfer(in);
+                        case "6" -> balance(in);
+                    }
+                } catch (ValidationException e) {
 
+                    log.error(e.getMessage());
+                }
                 System.out.println(menu);
             }
             System.exit(0);
